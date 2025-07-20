@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎉 Ultah Zetha 🎉</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: radial-gradient(circle, #ffe6f0, #fff1f5);
+      overflow: hidden;
+      text-align: center;
+    }
+
+    #cover {
+      position: fixed;
+      inset: 0;
+      background: black;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    #cover button {
+      padding: 15px 30px;
+      font-size: 20px;
+      background: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 0 15px #ff69b4;
+    }
+
+    h1 {
+      font-size: 3em;
+      color: #ff1493;
+      margin-top: 100px;
+      text-shadow: 2px 2px #fff;
+    }
+
+    p {
+      font-size: 1.5em;
+      color: #333;
+      margin: 20px;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+
+    .firework {
+      position: absolute;
+      border-radius: 50%;
+      width: 8px;
+      height: 8px;
+      background: red;
+      animation: explode 1s ease-out forwards;
+    }
+
+    @keyframes explode {
+      0% { transform: scale(0); opacity: 1; }
+      100% { transform: scale(3); opacity: 0; }
+    }
+
+    .emoji-float {
+      position: absolute;
+      font-size: 2rem;
+      animation: floatUp 4s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(100vh); opacity: 1; }
+      100% { transform: translateY(-10vh); opacity: 0; }
+    }
+
+    .meme-img {
+      width: 180px;
+      margin: 10px auto;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      display: block;
+    }
+
+    #memeWrapper {
+      display: none;
+      margin-top: 40px;
+
+    }
+  </style>
+</head>
+<body>
+  <div id="cover">
+    <h1>🎉 Hai Nyed! 🎉</h1>
+    <p>Siap-siap... Supres EA...!</p>
+    <button onclick="mulaiKejutan()">Pencet yang ini</button>
+  </div>
+
+  <h1 id="judul">🎂 Habede Dipo Muda! 🎂</h1>
+  <p id="pesan">
+    Happy birthday! Today is all about you!!
+    Semoga Lu bisa jadi orang yang lebih baik kedepannya, jadi orang yang berguna.
+    Gw tau perjuangan lu buat mencapai/mendapatkan untuk suatu hal adalah dari kegagalan yang lu dapat.  🌟
+    Pesan dari gw si jangan lelah untuk mencoba. 🎈🎊
+    💖 Tetap menjadi versi terbaik hidup lu! 💖
+  </p>
+
+  <div id="memeWrapper">
+    
+    <img src="./IMG/meme.jpg" alt="meme kucing kiriman" class="meme-img">
+
+  </div>
+
+
+  <script>
+    function mulaiKejutan() {
+      document.getElementById("cover").style.display = "none";
+      document.getElementById("memeWrapper").style.display = "block";
+      ketikPerHuruf();
+      ledakkanKembangApi();
+      emojiMelayang();
+    }
+
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const confetti = Array.from({ length: 300 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 6 + 4,
+      d: Math.random() * 10 + 5,
+      color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+      tilt: Math.random() * 10 - 10,
+      tiltAngle: 0,
+    }));
+
+    function drawConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confetti.forEach(c => {
+        ctx.beginPath();
+        ctx.fillStyle = c.color;
+        ctx.ellipse(c.x, c.y, c.r, c.r / 2, c.tiltAngle, 0, 2 * Math.PI);
+        ctx.fill();
+      });
+      updateConfetti();
+      requestAnimationFrame(drawConfetti);
+    }
+
+    function updateConfetti() {
+      confetti.forEach(c => {
+        c.y += Math.cos(c.d) + 1 + c.r / 2;
+        c.x += Math.sin(c.d);
+        c.tiltAngle += 0.05;
+        if (c.y > canvas.height) {
+          c.y = -10;
+          c.x = Math.random() * canvas.width;
+        }
+      });
+    }
+
+    drawConfetti();
+
+    function ledakkanKembangApi() {
+      for (let i = 0; i < 30; i++) {
+        const firework = document.createElement("div");
+        firework.className = "firework";
+        firework.style.left = `${Math.random() * 100}%`;
+        firework.style.top = `${Math.random() * 100}%`;
+        firework.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        document.body.appendChild(firework);
+        setTimeout(() => firework.remove(), 1000);
+      }
+    }
+
+    function emojiMelayang() {
+      const emojis = ['🎈','🎉','🥳','🎂','💖','✨','💫','🌟'];
+      for (let i = 0; i < 100; i++) {
+        const emoji = document.createElement("div");
+        emoji.className = "emoji-float";
+        emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+        emoji.style.left = Math.random() * 100 + "vw";
+        emoji.style.top = Math.random() * 100 + "vh";
+        emoji.style.fontSize = (Math.random() * 2 + 1) + "rem";
+        document.body.appendChild(emoji);
+        setTimeout(() => emoji.remove(), 4000);
+      }
+    }
+
+    function ketikPerHuruf() {
+      const pesan = document.getElementById("pesan");
+      const teks = pesan.innerHTML;
+      pesan.innerHTML = "";
+      let i = 0;
+      const interval = setInterval(() => {
+        if (i < teks.length) {
+          pesan.innerHTML += teks.charAt(i);
+          i++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 30);
+    }
+  </script>
+</body>
+</html>
